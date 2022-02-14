@@ -1,9 +1,37 @@
+:root {
+  --primaryColor: #CF6060;
+  ;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  ;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  ;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-image: url('/images/background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 a {
@@ -13,4 +41,61 @@ a {
 
 * {
   box-sizing: border-box;
+  padding: 0;
+}
+
+/* NAVBAR STYLES */
+/* BUTTON COLLAPSE ACTIVE */
+.collapseButtonActive span {
+  background-color: transparent !important;
+}
+
+.collapseButtonActive span::before {
+  transform: rotate(-46deg) !important;
+}
+
+.collapseButtonActive span::after {
+  transform: rotate(46deg) !important;
+}
+
+ul.noCollapse {
+  left: 0% !important;
+  transition: 0.2s !important;
+}
+
+/* Global styles */
+.container {
+  padding: 0 2rem;
+}
+
+/* SECTION TABLES STYLES */
+.tables {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex: 0.7;
+  height: 70vh
+  }
+
+/* SECTION MAIN STYLES */
+
+/* HEADER STYLE */
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Roboto san-serif; ;
+  font-size: 26px;
+  height: 100px;
+}
+
+/* STYLES FOR MESSAGE ERRORS */
+.message-error{
+  margin-top: 5px;
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+  padding-left: 10px;
 }
