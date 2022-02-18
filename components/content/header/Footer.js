@@ -19,7 +19,7 @@ export default function Footer () {
         />
         <SocialMedia
           src={'/images/social-medias/gmail.png'}
-          href='mailto:luisparr14@gmail.com'
+          href='mailto:ecomanglarte@gmail.com'
           alt={'gmail'}
           width={'30px'}
           height={'30px'}

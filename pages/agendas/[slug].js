@@ -228,14 +228,22 @@ export async function getAllAgendas () {
       }
     })
   } catch (error) {
-    return []
+    console.log(error)
+    return {
+      params: { slug: '1' },
+      params: { slug: '3' },
+    }
   }
 }
 
 export async function getStaticPaths () {
   const paths = await getAllAgendas()
+  console.log("Paths", paths)
   return {
-    paths,
+    paths:[
+      {params: {slug: '1'}},
+      {params: {slug: '3'}},
+    ],
     fallback: false
   };
 }
@@ -249,13 +257,13 @@ export async function getStaticProps ({ params }) {
       const response = await axios.get(`${process.env.API_URL}/agendas/${params.slug}`)
       agenda = response.data.agenda
     } catch (error) {
-      
+
     }
     try {
       const response = await axios.get(`${process.env.API_URL}/methods-payment/todos`)
       metodosDePago = response.data.metodosDePago
     } catch (error) {
-      
+
     }
   }
 
