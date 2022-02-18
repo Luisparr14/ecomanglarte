@@ -56,7 +56,7 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
         router.push('/')
       }, 3000);
     } catch (error) {
-      aleter('Ha ocurrido un error')
+      Notificacion('Ha ocurrido un error')
       setLoading(false)
     }
   }
