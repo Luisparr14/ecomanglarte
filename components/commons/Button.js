@@ -1,6 +1,6 @@
-export default function Button ({ title, backGroundColor, borderRadius, width, height, margin, onClick }) {
+export default function Button ({ title, backGroundColor, borderRadius, width, height, margin, onClick, disabled }) {
   return (
-    <button onClick={onClick}>
+    <button disabled={disabled} onClick={onClick}>
       {title}
       <style jsx>{`
           button {
@@ -24,6 +24,9 @@ export default function Button ({ title, backGroundColor, borderRadius, width, h
           }
           button:hover {
             border-color: var(--primaryColor);
+          }
+          button:disabled {
+            cursor: not-allowed;
           }
 
           @media (min-width: 375px) {

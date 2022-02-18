@@ -6,10 +6,12 @@ import Jumbotron from '../../components/content/header/Jumbotron'
 import Footer from '../../components/content/header/Footer'
 import InputText from '../../components/commons/InputText'
 import Button from '../../components/commons/Button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import OrderCard from '../../components/OrderCard'
 import { StatusPayment } from '../../PaymentNequi/QR/StatusPayments'
 import axios from 'axios'
+import { Oval } from 'react-loader-spinner'
+
 export default function Pedido () {
   const router = useRouter()
 
@@ -17,17 +19,21 @@ export default function Pedido () {
   const [datosPedido, setDatosPedido] = useState(null)
   const [show, setShow] = useState(false)
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const consultarPedido = async () => {
     setShow(false)
+    setLoading(true)
     try {
       await StatusPayment(codidoPedido)
       const response = await axios.get(`/api/orders/${codidoPedido}`)
       if (response.data.ok) {
         setDatosPedido(response.data.data)
+        setLoading(false)
         setShow(true)
       }
     } catch (error) {
+      setLoading(false)
       setError(true)
       setTimeout(() => {
         setError(false)
@@ -60,19 +66,30 @@ export default function Pedido () {
             margin={'35px 0px 0px 0px'}
             onClick={consultarPedido}
           />
-          {error && (
-            <div className="error">
-              <p>El codigo del pedido no existe</p>
-            </div>
-          )}
-          {show && <OrderCard
-            idPedido={codidoPedido}
-            fecha={new Date(datosPedido.fecha).toLocaleDateString()}
-            hora={new Date(datosPedido.fecha).toLocaleTimeString()}
-            precio={datosPedido.precio*datosPedido.cantidad_comprada}
-            idEstado={datosPedido.idestado}
-            estado={datosPedido.nombre_estado}
-          />}
+          <div className="container">
+            {error && (
+              <div className="error">
+                <p>El codigo del pedido no existe</p>
+              </div>
+            )}
+            {loading && (
+              <Oval
+                color="#CF6060"
+                secondaryColor="#000"
+                width={40}
+                height={40}
+                strokeWidth={5}
+              />
+            )}
+            {show && <OrderCard
+              idPedido={codidoPedido}
+              fecha={new Date(datosPedido.fecha).toLocaleDateString()}
+              hora={new Date(datosPedido.fecha).toLocaleTimeString()}
+              precio={datosPedido.precio * datosPedido.cantidad_comprada}
+              idEstado={datosPedido.idestado}
+              estado={datosPedido.nombre_estado}
+            />}
+          </div>
         </section>
       </main>
       <Footer />
@@ -93,6 +110,12 @@ export default function Pedido () {
           color: #f00;
           font-size: 20px;
         }
+        .container{
+          flex: 1;
+          display: flex;
+          align-items: center;
+        }
+        
         @media (min-width: 375px) {
           .title{
             font-size: 28px;

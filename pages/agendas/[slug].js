@@ -1,17 +1,19 @@
-import Head from "next/head";
-import styles from "../../styles/Home.module.css";
-import NavBar from "../../components/content/header/NavBar";
-import Image from "next/image";
-import Footer from "../../components/content/header/Footer";
-import Button from '../../components/commons/Button'
-import { useRouter } from "next/router";
-import axios from "axios";
-import InputText from "../../components/commons/InputText";
-import InputSelect from "../../components/commons/InputSelect";
-import { useState } from "react";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { Oval } from 'react-loader-spinner'
 import { init, send } from '@emailjs/browser'
 import { QRPayment } from "../../PaymentNequi/QR/GenerateQR";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import axios from "axios";
+import Button from '../../components/commons/Button'
 import Constants from "../../utils/Constants";
+import Footer from "../../components/content/header/Footer";
+import Head from "next/head";
+import Image from "next/image";
+import InputSelect from "../../components/commons/InputSelect";
+import InputText from "../../components/commons/InputText";
+import NavBar from "../../components/content/header/NavBar";
+import styles from "../../styles/Home.module.css";
 
 export default function AgendasSlug ({ agenda, metodosDePago }) {
   init(process.env.NEXT_PUBLIC_USERID)
@@ -31,8 +33,10 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
 
   const [compra, setCompra] = useState(datosCompra)
   const [user, setUser] = useState(userData)
+  const [loading, setLoading] = useState(false)
 
   const pagoNequi = async () => {
+    setLoading(true)
     try {
       const { codeQR, MessageID } = await QRPayment(compra)
       const body = Object.assign({ idPedido: MessageID }, user, compra)
@@ -45,10 +49,12 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
         message: 'Muchas gracias por su compra, complete el procedimiento de pago',
         qrcode: codeQR
       })
-      alert('Se ha enviado un correo con el código de pago')
+      setLoading(false)
+      alert('Revise su correo electrónico para proceder con el pago')
       router.push('/')
     } catch (error) {
-      alert('Ha ocurrido un error')
+      aleter('Ha ocurrido un error')
+      setLoading(false)
     }
   }
 
@@ -144,10 +150,19 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
               setUser({ ...user, direccion: e.target.value })
             }}
           />
-
           <h3>Total a pagar <code>{compra.cantidad * agenda.precio}$</code></h3>
+          <div className="loading">
+            {loading && <Oval
+              color="#CF6060"
+              secondaryColor="#000"
+              width={40}
+              height={40}
+              strokeWidth={5}
+            />}
+          </div>
           <Button
             onClick={comprar}
+            disabled={loading}
             title={'Comprar ' + compra.cantidad + ' agendas'}
             backGroundColor={'#00b894'}
             borderRadius={'10px'}
@@ -184,6 +199,10 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
           margin: 0px;
           padding: 10px;
           font-weight: bold;
+        }
+        .loading {
+          width: 40px;
+          height: 40px;
         }
         `}</style>
     </>
