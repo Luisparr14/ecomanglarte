@@ -10,9 +10,8 @@ export default function Button ({ title, backGroundColor, borderRadius, width, h
             color: #000;
             border: 2px solid rgba(255, 255, 255, 0);
             border-radius: ${borderRadius || '10px'};
-            padding: 10px;
-            width: ${width || undefined};
-            height: ${height || undefined};
+            padding: 10px;            
+            height: 25px;
             font-family: Roboto sans-serif;
             font-style: normal;
             font-weight: normal;
@@ -26,6 +25,19 @@ export default function Button ({ title, backGroundColor, borderRadius, width, h
           button:hover {
             border-color: var(--primaryColor);
           }
+
+          @media (min-width: 375px) {
+            button {
+              font-size: 25px;
+              height: 30px;
+            }
+          }
+          
+          @media (min-width: 768px) {
+          button{
+            
+          }
+        }
         `}</style>
     </button>
   )

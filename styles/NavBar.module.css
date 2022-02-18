@@ -52,7 +52,7 @@
   background-color: #000000;
   height: 3px;
   align-self: center;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, background-color 1s ease-in-out;
 }
 .navBarToggler span::before{
   content: "";

@@ -1,43 +1,35 @@
-import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Script from 'next/script'
 import { useEffect } from 'react'
 import styles from '../../../styles/NavBar.module.css'
-
 const loadScript = () => {
-  console.log('LISTO')
-    let btn = document.getElementById('collapse-button');
-    let collapsenav = document.getElementById('collapseNav');
-    // let content = document.getElementById('content-page');
-    // let content = document.getElementsByClassName('content-page');
-    let linkColapseNav = document.getElementById('collapseNav').getElementsByTagName('a');
+  let btn = document.getElementById('collapse-button');
+  let collapsenav = document.getElementById('collapseNav');
+  let linkColapseNav = document.getElementById('collapseNav').getElementsByTagName('a');
 
-    function toogleCollapse () {
-      collapsenav.classList.toggle('noCollapse')
-      btn.classList.toggle('collapseButtonActive');
-      // content.classList.toggle('blur')
+  const openNav = () => {
+    if (btn.classList.contains('collapseButtonActive')) {
+      btn.classList.remove('collapseButtonActive');
+      collapsenav.classList.remove('noCollapse');
+    } else {
+      collapsenav.classList.add('noCollapse')
+      btn.classList.add('collapseButtonActive');
     }
+  }
 
-    btn.addEventListener('click', toogleCollapse)
+  btn.onclick = openNav;
 
-    // content.addEventListener('click', () => {
-    //   console.log('click')
-    //   if (collapsenav.classList.contains('noCollapse')) {
-    //     toogleCollapse()
-    //   }
-    // })
+  const closeNav = () => {
+    collapsenav.classList.remove('noCollapse');
+    btn.classList.remove('collapseButtonActive');
+  }
 
-    for (let i = 0; i < linkColapseNav.length; i++) {
-      linkColapseNav[i].addEventListener('click', () => {
-        if (collapsenav.classList.contains('noCollapse')) {
-          toogleCollapse()
-        }
-      })
-    }
+  for (let i = 0; i < linkColapseNav.length; i++) {
+    linkColapseNav[i].onclick = closeNav;
+  }
 }
 
-export default function NavBar () {
+export default function NavBar ({ title }) {
   const router = useRouter()
   useEffect(() => {
     loadScript()
@@ -48,13 +40,16 @@ export default function NavBar () {
   const styleIndex = {
     color: router.asPath === "/" || router.asPath.includes('new') ? '#FFF' : '#000'
   }
+  const styleConsulta = {
+    color: router.asPath.includes('consultar') ? '#FFF' : '#000'
+  }
   return (
     <>
       <nav className={styles.navbar}>
         <div className={styles.navbarNav}>
           <label className={styles.logo}>
             <Link href={"/"}>
-              <a>ECOMANGLARTE</a>
+              <a>{`${title ? title : 'ECOMANGLARTE'}`}</a>
             </Link>
           </label>
           <label id="collapse-button" className={`${styles.navBarToggler} ${styles.collapseButton}`} type="button">
@@ -63,30 +58,15 @@ export default function NavBar () {
           <ul className={styles.navItems}>
             <li><Link href="/"><a style={styleIndex}>Inicio</a></Link></li>
             <li><Link href="/agendas"><a style={styleAgendas}>Agendas</a></Link></li>
+            <li><Link href="/consultar/pedido"><a style={styleConsulta}>Consultar Pedido</a></Link></li>
           </ul>
         </div>
       </nav>
       <ul id="collapseNav" className={styles.navItemCollapse}>
-        <li><Link href={{
-          pathname: "/"
-        }}>
-          <a style={styleIndex}>Inicio</a>
-        </Link></li>
-        <li><Link href={{
-          pathname: '/agendas'
-        }}>
-          <a style={styleAgendas}>Agendas</a>
-        </Link></li>
+        <li><Link href={{pathname: "/"}}><a style={styleIndex}>Inicio</a></Link></li>
+        <li><Link href={{pathname: '/agendas'}}><a style={styleAgendas}>Agendas</a></Link></li>
+        <li><Link href="/consultar/pedido"><a style={styleConsulta}>Consultar Pedido</a></Link></li>
       </ul>
     </>
   )
-}
-
-export async function getServerSideProps ({ }) {
-  console.log('getServerSideProps')
-  return {
-    props: {
-
-    }
-  }
 }

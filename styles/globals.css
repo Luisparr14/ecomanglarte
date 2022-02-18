@@ -21,6 +21,11 @@
   ;
 }
 
+label{
+  font-family: 'Concert One';
+  font-weight: 100;
+}
+
 html,
 body {
   padding: 0;
@@ -48,6 +53,7 @@ a {
 /* BUTTON COLLAPSE ACTIVE */
 .collapseButtonActive span {
   background-color: transparent !important;
+  transition: background-color 0.2s ease-in-out !important;
 }
 
 .collapseButtonActive span::before {

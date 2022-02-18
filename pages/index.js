@@ -4,39 +4,37 @@ import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import Jumbotron from '../components/content/header/Jumbotron'
 import Footer from '../components/content/header/Footer'
-import Script from 'next/script'
-
+import { useEffect } from 'react'
+import { StatusPayment } from '../PaymentNequi/QR/StatusPayments'
 export default function Home () {
-  const router = useRouter()
+
   return (
     <>
       <NavBar />
-      <div className={`container content-page`} id='content-pages'>
-        <Head>
-          <title>Inicio</title>
-          <meta name="description" content="Pagina principal de la app web ECOMANGLARTE" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main className={styles.main}>
-          <Jumbotron
-            title={'Ecomanglarte'}
-          />
-          <section className={styles.content}>
-            <h2 className='title'>¿QUIENES SOMOS?</h2>
-            <p className='description'>
-              Ecomanglarte es una iniciativa juvenil el cual consiste en elaborar papel artesanal
-              de la hoja de mangle, es importante resaltar que la base principal para elaborar
-              nuestro producto es el papel reciclado, el cual es recolectado de las instituciones
-              educativas aledañas a nuestra comunidad, este y cada uno de los procesos son
-              liderados y ejecutados por jóvenes cuyo interés es empoderarse de las necesidades
-              de su comunidad y darle la mejor solución, con el objetivo de crear una conciencia
-              ambiental en nuestra comunidad y mejorar la calidad de vida de las familias allí
-              representadas.
-            </p>
-          </section>
-          <Footer />
-        </main>
-      </div>
+      <Head>
+        <title>Inicio</title>
+        <meta name="description" content="Pagina principal de la app web ECOMANGLARTE" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className={styles.main}>
+        <Jumbotron
+          title={'Ecomanglarte'}
+        />
+        <section className={styles.content}>
+          <h2 className='title'>¿QUIENES SOMOS?</h2>
+          <p className='description'>
+            Ecomanglarte es una iniciativa juvenil el cual consiste en elaborar papel artesanal
+            de la hoja de mangle, es importante resaltar que la base principal para elaborar
+            nuestro producto es el papel reciclado, el cual es recolectado de las instituciones
+            educativas aledañas a nuestra comunidad, este y cada uno de los procesos son
+            liderados y ejecutados por jóvenes cuyo interés es empoderarse de las necesidades
+            de su comunidad y darle la mejor solución, con el objetivo de crear una conciencia
+            ambiental en nuestra comunidad y mejorar la calidad de vida de las familias allí
+            representadas.
+          </p>
+        </section>
+      </main>
+      <Footer />
       <style jsx>{`
         .title{
           font-size: 25px;

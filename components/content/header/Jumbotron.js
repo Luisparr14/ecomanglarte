@@ -21,7 +21,7 @@ export default function Jumbotron ({title}) {
           background: rgba(207, 96, 96, 0.62);
           border-radius: 10px;
         }
-      `}</style>`
+      `}</style>
     </>
   )
 }

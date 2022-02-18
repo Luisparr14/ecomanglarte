@@ -5,47 +5,36 @@ import { useRouter } from 'next/router'
 import Jumbotron from '../../components/content/header/Jumbotron'
 import Footer from '../../components/content/header/Footer'
 import AgendasCard from '../../components/AgendasCard'
+import axios from 'axios'
 
-export default function ListAgendas ({ title, description }) {
+export default function ListAgendas ({ agendas }) {
   const router = useRouter()
   return (
     <>
       <NavBar />
-      <div className={`container content-page`} id='content-pages'>
-        <Head>
-          <title>{title}</title>
-          <meta name="description" content={description} />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main className={styles.main}>
-          <Jumbotron
-            title={'Agendas'}
-          />
-          <section className='list-agendas'>
+      <Head>
+        <title>Agendas</title>
+        <meta name="description" content='Lista de agendas disponibles de ECOMANGLARTE' />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className={styles.main}>
+        <Jumbotron
+          title={'Agendas'}
+        />
+        <section className='list-agendas'>
+          {agendas.map(agenda => (
             <AgendasCard
-              imgLink={'https://template.canva.com/EADwi4xAG6I/1/0/256w-JBWCAd5q564.jpg'}
-              title={'Agendas'}
-              description={'Una agenda mani'}
+              key={agenda.idagenda}
+              id={agenda.idagenda}
+              title={agenda.nombre}
+              description={agenda.descripcion}
+              imgLink={agenda.image}
+              precio={agenda.precio}
             />
-            <AgendasCard
-              imgLink={'https://template.canva.com/EADwi4xAG6I/1/0/256w-JBWCAd5q564.jpg'}
-              title={'Agendas'}
-              description={'Una agenda mani'}
-            />
-            <AgendasCard
-              imgLink={'https://template.canva.com/EADwi4xAG6I/1/0/256w-JBWCAd5q564.jpg'}
-              title={'Agendas'}
-              description={'Una agenda mani'}
-            />
-            <AgendasCard
-              imgLink={'https://template.canva.com/EADwi4xAG6I/1/0/256w-JBWCAd5q564.jpg'}
-              title={'Agendas'}
-              description={'Una agenda mani'}
-            />
-          </section>
-          <Footer />
-        </main>
-      </div>
+          ))}
+        </section>
+      </main>
+      <Footer />
       <style jsx>{`
         .title{
           font-size: 25px;
@@ -96,10 +85,17 @@ export default function ListAgendas ({ title, description }) {
 }
 
 export async function getStaticProps () {
+  let agendas =[]
+
+  try {
+    const response = await axios.get(`${process.env.API_URL}/agendas/todas`)
+    agendas = response.data.agendas
+  } catch (error) {
+    alert('Error al obtener las agendas, recarga la página')
+  }
   return {
     props: {
-      title: 'Agendas',
-      description: 'Pagina principal de la app web ECOMANGLARTE'
+      agendas
     }
   }
 }
