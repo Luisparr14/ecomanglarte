@@ -91,7 +91,7 @@ export async function getStaticProps () {
     const response = await axios.get(`${process.env.API_URL}/agendas/todas`)
     agendas = response.data.agendas
   } catch (error) {
-    alert('Error al obtener las agendas, recarga la página')
+     
   }
   return {
     props: {

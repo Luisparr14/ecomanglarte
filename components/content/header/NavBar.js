@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import styles from '../../../styles/NavBar.module.css'
+
 const loadScript = () => {
   let btn = document.getElementById('collapse-button');
   let collapsenav = document.getElementById('collapseNav');

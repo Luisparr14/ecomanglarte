@@ -14,6 +14,7 @@ import InputSelect from "../../components/commons/InputSelect";
 import InputText from "../../components/commons/InputText";
 import NavBar from "../../components/content/header/NavBar";
 import styles from "../../styles/Home.module.css";
+import { Notificacion } from '../../helpers/Notificaciones'
 
 export default function AgendasSlug ({ agenda, metodosDePago }) {
   init(process.env.NEXT_PUBLIC_USERID)
@@ -50,8 +51,10 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
         qrcode: codeQR
       })
       setLoading(false)
-      alert('Revise su correo electrónico para proceder con el pago')
-      router.push('/')
+      Notificacion('success', 'Revise su correo electrónico para proceder con el pago')
+      setTimeout(() => {
+        router.push('/')
+      }, 3000);
     } catch (error) {
       aleter('Ha ocurrido un error')
       setLoading(false)
@@ -62,7 +65,7 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
     if (compra.cantidad === 0 || compra.cantidad === '' ||
       user.nombre === '' || user.email === '' || user.direccion === '' ||
       compra.formaDePago === '' || compra.articulo === '') {
-      return alert('Por favor complete todos los campos')
+      return Notificacion('error', 'Debe completar todos los campos')
     }
 
     switch (compra.formaDePago) {
@@ -70,12 +73,16 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
         pagoNequi()
         break;
       case Constants.paymentMethod.efectivo:
-        alert('Pago en efectivo')
+        Notificacion('success', 'Gracias por su compra')
         break;
       default:
-        alert('Por favor seleccione un método de pago')
+        Notificacion('error', 'Debe seleccionar una forma de pago')
         break;
     }
+  }
+
+  if (router.isFallback) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -210,15 +217,19 @@ export default function AgendasSlug ({ agenda, metodosDePago }) {
 }
 
 export async function getAllAgendas () {
-  const response = await axios.get(`${process.env.API_URL}/agendas/todas`)
-  const { agendas } = response.data
-  return agendas.map(agenda => {
-    return {
-      params: {
-        slug: agenda.idagenda.toString()
+  try {
+    const response = await axios.get(`${process.env.API_URL}/agendas/todas`)
+    const { agendas } = response.data
+    return agendas.map(agenda => {
+      return {
+        params: {
+          slug: agenda.idagenda.toString()
+        }
       }
-    }
-  })
+    })
+  } catch (error) {
+    return []
+  }
 }
 
 export async function getStaticPaths () {
@@ -230,20 +241,22 @@ export async function getStaticPaths () {
 }
 
 export async function getStaticProps ({ params }) {
-  let agenda
+  let agenda = []
   let metodosDePago = []
 
-  try {
-    const response = await axios.get(`${process.env.API_URL}/agendas/${params.slug}`)
-    agenda = response.data.agenda
-  } catch (error) {
-    alert('Ha ocurrido un error')
-  }
-  try {
-    const response = await axios.get(`${process.env.API_URL}/methods-payment/todos`)
-    metodosDePago = response.data.metodosDePago
-  } catch (error) {
-    alert('Ha ocurrido un error')
+  if (params.slug) {
+    try {
+      const response = await axios.get(`${process.env.API_URL}/agendas/${params.slug}`)
+      agenda = response.data.agenda
+    } catch (error) {
+      
+    }
+    try {
+      const response = await axios.get(`${process.env.API_URL}/methods-payment/todos`)
+      metodosDePago = response.data.metodosDePago
+    } catch (error) {
+      
+    }
   }
 
   return {
